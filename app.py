@@ -118,7 +118,7 @@ class ImageProcessor:
             return residual.astype(np.float32)
         except Exception as e:
             logger.error(f"Wavelet denoising failed: {e}")
-            return None
+            return {"error": f"Wavelet denoising failed: {e}"}
     
     @staticmethod
     def correlation_coefficient(a: np.ndarray, b: np.ndarray) -> float:
