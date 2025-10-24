@@ -230,14 +230,17 @@ class ScannerPredictor:
             # Load and process image
             img = ImageProcessor.load_image_gray(image_path)
             if img is None:
+                logger.error("Feature extraction failed: Image loading returned None.")
                 return None
             
             img_norm = ImageProcessor.normalize_image(img)
             if img_norm is None:
+                logger.error("Feature extraction failed: Image normalization returned None.")
                 return None
             
             residual = ImageProcessor.residual_wavelet(img_norm)
             if residual is None:
+                logger.error("Feature extraction failed: Wavelet residual extraction returned None.")
                 return None
             
             # Extract correlation features
