@@ -389,15 +389,9 @@ def main():
     st.sidebar.title("Options")
     
     # Model selection for scanner prediction
-    available_models = list(scanner_predictor.models.keys())
-    if available_models:
-        selected_model = st.sidebar.selectbox(
-            "Select Scanner Prediction Model:",
-            available_models,
-            index=0
-        )
-    else:
-        st.sidebar.warning("No scanner prediction models available")
+    selected_model = 'XGBoost'
+    if selected_model not in scanner_predictor.models:
+        st.sidebar.warning(f"XGBoost model not available. Available models: {list(scanner_predictor.models.keys())}")
         selected_model = None
     
     # File upload
@@ -660,13 +654,11 @@ def main():
         col1, col2 = st.columns(2)
         
         with col1:
-            st.markdown("**Scanner Prediction Models:**")
-            if scanner_predictor.models:
-                for model_name in scanner_predictor.models.keys():
-                    st.markdown(f"✅ {model_name}")
-                st.markdown(f"📊 Available scanners: {', '.join(scanner_predictor.labels)}")
+            st.markdown("**Scanner Prediction Model:**")
+            if 'XGBoost' in scanner_predictor.models:
+                st.markdown("✅ XGBoost")
             else:
-                st.markdown("❌ No models loaded")
+                st.markdown("❌ XGBoost model not loaded")
         
         with col2:
             st.markdown("**Forgery Detection Model:**")
