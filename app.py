@@ -111,7 +111,9 @@ class ImageProcessor:
             except ImportError as e:
                 logger.error(f"Error importing skimage.restoration: {e}. Please ensure scikit-image is installed.")
                 return None
+            logger.info("Starting wavelet denoising.")
             denoised = denoise_wavelet(img, method='BayesShrink', mode='soft', rescale_sigma=True)
+            logger.info("Wavelet denoising completed.")
             residual = img - denoised
             return residual.astype(np.float32)
         except Exception as e:
@@ -139,6 +141,7 @@ class ImageProcessor:
         """Compute radial FFT statistics"""
         try:
             from numpy.fft import fft2, fftshift
+            logger.info("Starting FFT radial statistics calculation.")
             
             # Apply window to reduce spectral leakage
             window = np.outer(np.hanning(patch.shape[0]), np.hanning(patch.shape[1]))
@@ -155,6 +158,7 @@ class ImageProcessor:
             max_radius = np.sqrt(center_y**2 + center_x**2)
             
             if max_radius < 1e-6:
+                logger.warning("Max radius too small for FFT, returning zeros.")
                 return np.zeros(n_bins, dtype=np.float32)
             
             radius_normalized = radius / max_radius
@@ -176,6 +180,7 @@ class ImageProcessor:
             std_feat = np.std(features)
             if std_feat > 1e-8:
                 features = (features - mean_feat) / std_feat
+            logger.info("FFT radial statistics calculation completed.")
             
             return features
         except Exception as e:
