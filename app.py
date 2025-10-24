@@ -246,10 +246,10 @@ class ScannerPredictor:
             if img_norm is None:
                 return {"error": "Image normalization failed."}
             
-            residual = ImageProcessor.residual_wavelet(img_norm)
-            if residual is None:
-                return {"error": "Wavelet residual extraction failed."}
-            
+            residual_result = ImageProcessor.residual_wavelet(img_norm)
+            if isinstance(residual_result, dict) and "error" in residual_result:
+                return residual_result
+            residual = residual_result            
             # Extract correlation features
             corr_feats = []
             for label in self.labels:
