@@ -1,0 +1,78 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Test Files
+test_*.py
+debug_*.py
+*_test.py
+test_*.pdf
+test_*.docx
+test_*.png
+test_*.jpg
+test_*.tif
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+temp/
+tmp/
+
+# Large Data Files (optional - uncomment if you want to exclude)
+# data.zip
+# *.zip
+# *.tar.gz
+
+# Model Checkpoints (uncomment if models are too large)
+# *.pth
+# *.pt
+
+# Streamlit
+.streamlit/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Coverage Reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Pytest
+.pytest_cache/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+

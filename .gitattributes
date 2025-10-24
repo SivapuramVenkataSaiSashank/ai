@@ -1,0 +1,2 @@
+artifacts/best_cnn_model.pt filter=lfs diff=lfs merge=lfs -text
+artifacts/metadata.joblib filter=lfs diff=lfs merge=lfs -text
