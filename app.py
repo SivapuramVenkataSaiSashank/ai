@@ -1,5 +1,11 @@
 import streamlit as st
 import numpy as np
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 try:
     import cv2
 except ImportError as e:
@@ -7,21 +13,6 @@ except ImportError as e:
     cv2 = None # Set cv2 to None so subsequent calls will fail gracefully
 from PIL import Image
 import torch
-import torch.nn as nn
-import torchvision.models as models
-import torchvision.transforms as transforms
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
-import joblib
-import os
-import tempfile
-from typing import Dict, List, Tuple, Optional
-import logging
-from document_converter import DocumentConverter
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Page configuration
 st.set_page_config(
