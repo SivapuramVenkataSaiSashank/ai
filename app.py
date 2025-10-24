@@ -1,6 +1,16 @@
 import streamlit as st
 import numpy as np
 import logging
+from PIL import Image
+import torch
+import torch.nn as nn
+import torchvision.models as models
+import torchvision.transforms as transforms
+import joblib
+import os
+import tempfile
+from typing import Dict, List, Tuple, Optional
+from document_converter import DocumentConverter
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -11,16 +21,7 @@ try:
 except ImportError as e:
     logger.error(f"Error importing cv2: {e}. Please ensure opencv-python-headless is installed.")
     cv2 = None # Set cv2 to None so subsequent calls will fail gracefully
-from PIL import Image
-import torch
 
-# Page configuration
-st.set_page_config(
-    page_title="AI Trace Finder",
-    page_icon="🔍",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Custom CSS for better styling
 st.markdown("""
