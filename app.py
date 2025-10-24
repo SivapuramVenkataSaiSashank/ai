@@ -1,6 +1,10 @@
 import streamlit as st
 import numpy as np
-import cv2
+try:
+    import cv2
+except ImportError as e:
+    logger.error(f"Error importing cv2: {e}. Please ensure opencv-python-headless is installed.")
+    cv2 = None # Set cv2 to None so subsequent calls will fail gracefully
 from PIL import Image
 import torch
 import torch.nn as nn
@@ -80,11 +84,16 @@ class ImageProcessor:
     def load_image_gray(image_path: str) -> Optional[np.ndarray]:
         """Load and convert image to grayscale"""
         try:
-            img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-            if img is None:
-                # Try with PIL as fallback
+            if cv2 is None:
+                logger.error("cv2 is not available. Cannot use cv2.imread.")
                 img = Image.open(image_path).convert('L')
                 img = np.array(img)
+            else:
+                img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+                if img is None:
+                    logger.warning(f"cv2.imread returned None for {image_path}. Trying with PIL as fallback.")
+                    img = Image.open(image_path).convert('L')
+                    img = np.array(img)
             return img.astype(np.float32) / 255.0
         except Exception as e:
             logger.error(f"Failed to load image: {e}")
