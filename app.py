@@ -114,7 +114,11 @@ class ImageProcessor:
     def residual_wavelet(img: np.ndarray) -> Optional[np.ndarray]:
         """Extract wavelet residual"""
         try:
-            from skimage.restoration import denoise_wavelet
+            try:
+                from skimage.restoration import denoise_wavelet
+            except ImportError as e:
+                logger.error(f"Error importing skimage.restoration: {e}. Please ensure scikit-image is installed.")
+                return None
             denoised = denoise_wavelet(img, method='BayesShrink', mode='soft', rescale_sigma=True)
             residual = img - denoised
             return residual.astype(np.float32)
