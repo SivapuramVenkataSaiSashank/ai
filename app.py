@@ -234,24 +234,21 @@ class ScannerPredictor:
         except Exception as e:
             logger.error(f"Failed to load models: {e}")
     
-    def extract_scanner_features(self, image_path: str) -> Optional[np.ndarray]:
+    def extract_scanner_features(self, image_path: str) -> Dict:
         """Extract features for scanner prediction"""
         try:
             # Load and process image
             img = ImageProcessor.load_image_gray(image_path)
             if img is None:
-                logger.error("Feature extraction failed: Image loading returned None.")
-                return None
+                return {"error": "Image loading failed."}
             
             img_norm = ImageProcessor.normalize_image(img)
             if img_norm is None:
-                logger.error("Feature extraction failed: Image normalization returned None.")
-                return None
+                return {"error": "Image normalization failed."}
             
             residual = ImageProcessor.residual_wavelet(img_norm)
             if residual is None:
-                logger.error("Feature extraction failed: Wavelet residual extraction returned None.")
-                return None
+                return {"error": "Wavelet residual extraction failed."}
             
             # Extract correlation features
             corr_feats = []
@@ -275,11 +272,11 @@ class ScannerPredictor:
             
             # Combine features
             combined_features = np.concatenate([corr_feats, fft_feats])
-            return combined_features.reshape(1, -1)
+            return {"features": combined_features.reshape(1, -1)}
             
         except Exception as e:
             logger.error(f"Feature extraction failed: {e}")
-            return None
+            return {"error": f"Feature extraction failed: {e}"}
     
     def predict_scanner(self, image_path: str, model_name: str = 'SVM') -> Dict:
         """Predict scanner for an image"""
@@ -287,9 +284,10 @@ class ScannerPredictor:
             if model_name not in self.models:
                 return {"error": f"Model {model_name} not available"}
             
-            features = self.extract_scanner_features(image_path)
-            if features is None:
-                return {"error": "Failed to extract features"}
+            features_result = self.extract_scanner_features(image_path)
+            if "error" in features_result:
+                return {"error": features_result["error"]}
+            features = features_result["features"]
             
             model = self.models[model_name]
             prediction = model.predict(features)[0]
