@@ -386,13 +386,13 @@ def main():
         forgery_detector = ForgeryDetector()
     
     # Sidebar
-    st.sidebar.title("Options")
+    # st.sidebar.title("Options")
     
     # Model selection for scanner prediction
     selected_model = 'XGBoost'
-    if selected_model not in scanner_predictor.models:
-        st.sidebar.warning(f"XGBoost model not available. Available models: {list(scanner_predictor.models.keys())}")
-        selected_model = None
+    # if selected_model not in scanner_predictor.models:
+    #     st.sidebar.warning(f"XGBoost model not available. Available models: {list(scanner_predictor.models.keys())}")
+    #     selected_model = None
     
     # File upload
     uploaded_file = st.file_uploader(
@@ -647,26 +647,6 @@ def main():
         - Documents will be automatically converted to images for analysis
         - Multi-page documents will be processed page by page
         """)
-        
-        # Show model status
-        st.markdown("### Model Status")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("**Scanner Prediction Model:**")
-            if 'XGBoost' in scanner_predictor.models:
-                st.markdown("✅ XGBoost")
-            else:
-                st.markdown("❌ XGBoost model not loaded")
-        
-        with col2:
-            st.markdown("**Forgery Detection Model:**")
-            if forgery_detector.model is not None:
-                st.markdown("✅ ResNet18")
-                st.markdown(f"🖥️ Device: {forgery_detector.device}")
-            else:
-                st.markdown("❌ Model not loaded")
 
 if __name__ == "__main__":
     main()
